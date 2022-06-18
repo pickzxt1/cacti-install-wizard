@@ -497,7 +497,7 @@ systemctl start cron
 
 
 choice='Select a operation: '
-options=("New-installation" "spine-only-installation" "cacti-upgrade" "Quit")
+options=("全新安装" "只安装脊柱" "升级仙人掌" "退出")
 select opt in "${options[@]}"
 do
     case $opt in
