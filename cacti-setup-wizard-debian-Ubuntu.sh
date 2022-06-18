@@ -1,32 +1,15 @@
 #!/bin/bash
 
-##Author Sean Mancini
-#www.seanmancini.com
-
-##Purpose this script will facilitate the installation of Cacti along with all supporting binaries 
-#this script will also ensure that proper configurations are put in place to get up and running with cacti
-
-##Dont forget to checkout cacti @ www.cacti.net
-
-#    This program is free software: you can redistribute it and/or modify#
-#    it under the terms of the GNU General Public License as published by#
-#    the Free Software Foundation, either version 3 of the License, or#
-#    (at your option) any later version.#
-#    This program is distributed in the hope that it will be useful,#
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of#
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the#
-#    GNU General Public License for more details.#
-#    You should have received a copy of the GNU General Public License#
-#    along with this program.  If not, see <https://www.gnu.org/licenses/>.#
+##By ： AoaBo's
 
 
-echo "this script requires git"
+echo "这个脚本需要 git"
 apt-get install git  -y
 
 
 
-echo "This script will download all Cacti dependecies and download the chosen cacti version from the cacti github"
-echo "Dont forget to support cacti @ cacti.net!"
+echo "此脚本将下载所有 Cacti 依赖项并从 cacti github 下载所选的 cacti 版本"
+echo "版权所有 cacti @ cacti.net!"
 
 
 function new_install () {
@@ -34,14 +17,14 @@ function new_install () {
 
 #Download chosen release
 
-echo "here are some of the current cacti release versions \n"
+echo "这是一些当前的 cacti 发行版本 \n"
  git ls-remote --tags https://github.com/Cacti/cacti|grep 'release/[[:digit:]\.]*$'|tail -10|awk '{print $2}'|tr 'refs/tags/release' ' '|sed 's/^ *//;s/ *$//'
 
 
 ###One day I will have this auto populate 
 
 
-echo  "which release would you like to download ? Hit enter for latest"
+echo  "您想下载哪个版本？点击进入最新"
 read version
 
 if  [ "$version" == "" ]
@@ -64,13 +47,13 @@ apt-get  install -y apache2 libapache2-mod-php  rrdtool mariadb-server snmp snmp
 
 
 
-echo "will you be using the spine poller enter 1 for yes 2 for no"
+echo "是否安装脊椎轮询器 输入 1 表示是 2 表示否"
 read answer
 if [ $answer == "1" ]
 then
 ##Download packages needed for spine
 apt-get  install -y build-essential dos2unix dh-autoreconf libtool  help2man libssl-dev libmysql++-dev  librrds-perl libsnmp-dev 
-echo "downloading and compling spine"
+echo "下载和编译脊椎"
 git clone https://github.com/Cacti/spine.git
 cd spine
 ./bootstrap
@@ -82,7 +65,7 @@ chmod u+s /usr/local/spine/bin/spine
 cd ..
 
 else
-echo "spine dependecies  will not be installed"
+echo "不会安装脊椎依赖项"
 fi                                                       
 
 
@@ -111,7 +94,7 @@ fi
 #move cacti install to chosen  directory
 
 
-echo "Where would you like to install cacti default location is /var/www/html hit enter for default location"
+echo "您想在哪里安装 cacti 默认位置是 /var/www/html 输入默认位置"
 read location
 if [$location = ""]
 then
@@ -125,12 +108,12 @@ fi
 
 
 #Create cacti user and change permission of directory
-echo "Which user would you like to run Cacti under (Default is www-data) hit enter for default"
+echo "您想在哪个用户下运行 Cacti（默认为 www-data）按回车键默认"
 read user
 if [$user = ""]
 then 
 user="www-data"
-echo  "cacti will be run under $user"
+echo  "仙人掌将在 $user"
 chown -R  $user:$user $location/cacti
 else 
 useradd $user
@@ -182,7 +165,7 @@ systemctl restart mysql
 
 
 ##Create database 
-echo "would you like to customize the database name and user ? hit enter for defaults"
+echo "您想自定义数据库名称和用户吗？按回车键获取默认值"
 read customize
 
 if [[ $customize = "" ]] 
@@ -231,11 +214,11 @@ datbase password  $password
 
 else
 
-echo "enter db name"
+echo "输入数据库名称"
 read customdbname
-echo "enter db user"
+echo "输入数据库用户"
 read customdbuser
-echo "enter db password"
+echo "输入数据库密码"
 read customdbpassword
 
 
@@ -282,7 +265,7 @@ sed -e 's/memory_limit = 128M/memory_limit = 400M/' -i /etc/php/$php_version/apa
 
 
 
-echo "this script can download the following plugins monitor,thold,audit from the cacti group  would you like to install them  ? type yes to download hit enter to skip"
+echo "这个脚本可以从 cacti 组下载以下插件 monitor,thold,audit 你想安装它们吗？输入yes下载 回车跳过"
 read plugins
  if [[  $plugins == "yes"  ]]
   then
@@ -302,18 +285,18 @@ read plugins
 
 
 else
- echo "plugins will not be installed"
+ echo "不会安装插件"
   fi
 
 
 
-echo "Would you like to download my RRD Monitoring script ? type yes to download hit enter to skip "
+echo "您想下载我的 RRD 监控脚本吗？输入yes下载 回车跳过 "
 read mon_script
 if [[ $mon_script == "yes" ]]
   then
   git clone  https://github.com/bmfmancini/rrd-monitor.git
       else
-       echo "Script will not be downloaded"
+       echo "不会下载脚本"
 fi
 
 ####Create cron for cacti user
@@ -328,7 +311,7 @@ echo "*/5 * * * * $user php $location/cacti/poller.php > /dev/null 2>&1" > /etc/
 
 
 
-echo "restarting Mysqldb and Apache server for service refresh"
+echo "启动 Mysqldb 和 Apache 服务器以进行服务刷新"
 systemctl restart mysql
 systemctl restart apache2
 
@@ -336,13 +319,13 @@ systemctl restart apache2
 
 
 
-echo "The setup has completed you can now either install cacti via the CLI or access the websetup to continue install via CLI type yes if this fails please complete via web console"
+echo "设置已完成，您现在可以通过 CLI 安装 cacti 或访问 websetup 以继续通过 CLI 安装类型是，如果失败，请通过 Web 控制台完成"
 read installanswer
 if [[  $installanswer == "yes" ]]
 then 
 php $location/cacti/cli/install_cacti.php --accept-eula --install -d
 else 
-echo "please complete install on web console"
+echo "请在 Web 控制台上完成安装"
 fi
 
 
