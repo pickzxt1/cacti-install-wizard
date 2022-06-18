@@ -343,13 +343,13 @@ apt-get  install -y build-essential dos2unix dh-autoreconf libtool  help2man lib
 apt-get install -y libmysql++-dev ##For debian 9 and below
 apt-get install -y default-libmysqlclient-dev ###For debian 10+
 
-echo " Which version of spine would you like to use ? Hit enter for the latest or enter the release vesrion i.e 1.2.3 Usually should Match your installed version of Cacti"
+echo " 您想使用哪个版本的脊椎？点击回车获取最新版本或输入发布版本，即 1.2.3 通常应该与您安装的 Cacti 版本匹配"
 read version
 
 if [$version = ""]
 then
 
-echo "downloadinglatest version of spine  and compling "
+echo "下载最新版本的脊椎并编译 "
 git clone https://github.com/Cacti/spine.git spine
 cd spine
 ./bootstrap
@@ -377,17 +377,17 @@ cp /usr/local/spine/etc/spine.conf.dist  /usr/local/spine/etc/spine.conf
 
 
 
-echo "Spine has been compiled and installed you will now need to configure your DB credentials to /usr/local/spine/etc/spine.conf"
+echo "Spine 已经编译和安装，您现在需要在 /usr/local/spine/etc/spine.conf 配置你的信息"
 
-echo "Would you like to configure you spine.conf file? y or n"
+echo "您想配置您的 spin.conf 文件吗？y或n"
 read answer
 if [ $answer == "y" ]
 then
-echo "Enter database user"
+echo "输入数据库用户名"
 read user
-echo "enter database password"
+echo "输入数据库密码"
 read password
-echo "enter database name"
+echo "输入数据库名称"
 read databasename
 
 sed -i -e 's@^DB_Host.*@DB_Host  127.0.0.1@g' /usr/local/spine/etc/spine.conf
@@ -398,7 +398,7 @@ sed -i -e 's@^DB_Database.*@DB_Database  '$databasename'@g' /usr/local/spine/etc
 else
 
 
-echo "spine install completed"
+echo "脊柱安装完成"
 
 fi
 
@@ -407,39 +407,39 @@ fi
 
 function cacti_upgrade () {
 
-echo "Stopping cron service"
+echo "停止 cron 服务"
 systemctl stop cron
 
 
-echo "this option will upgrade you existing cacti installation
-you will need to supply you db information and cacti installation path"
+echo "此选项将升级您现有的仙人掌安装
+您需要提供数据库信息和仙人掌安装路径"
 
-echo "specify your db username"
+echo "指定您的数据库用户名"
 read currentdbuser
 
-echo "specify your database name"
+echo "指定您的数据库名称"
 read currentdb
-echo "specify your current db password"
+echo "指定您当前的数据库密码"
 read currentdbpwd
-echo "specify your cacti install path usually /var/www/html hit enter to accept default"
+echo "指定您的仙人掌安装路径，通常 /var/www/html 按回车默认"
 read currentpath
 if [  "$currentpath" == "" ]
 then 
 currentpath="/var/www/html"
 fi
-echo "specify a backup path to backup cacti files default is /tmp"
+echo "指定备份仙人掌文件的备份路径默认为 /tmp"
 read backpath
 if [  "$backpath" == "" ]
 then
 backpath="/tmp"
 fi
 
-echo "backing up DB"
+echo "备份数据库"
 mysqldump -u $currentdbuser -p $currentdbpassword   $currentdb > cacti_db_backup.sql
 
 
 
-echo  "which release would you like to upgrade to? Hit enter for latest"
+echo  "您想升级到哪个版本？"
 read version
 
 if  [ "$version" == "" ]
@@ -457,15 +457,15 @@ fi
 mv $currentpath/cacti  $backpath
 mv cacti $currentpath
 
-echo "adding old config.php file into new cacti folder"
+echo "将旧的 config.php 文件添加到新的 cacti 文件夹中"
 cp $backpath/cacti/include/config.php $currentpath/cacti/include/config.php
 
-echo "Moving plugin files back into new cacti folder"
+echo "将插件文件移回新的仙人掌文件夹r"
 cp -R $backpath/cacti/plugins/* $currentpath/cacti/plugins/
 
 
 
-echo "what system user do you run cacti as ? usually www-data hit enter for default"
+echo "您以什么系统用户身份运行cacti？ www-data为默认"
 read cactiuser
 if [ "$cactiuser" == "" ]
 then 
@@ -476,9 +476,9 @@ chown -R $cactiuser:$cactiuser $currentpath/cacti
 
 
 
-echo "cacti has been upgraded to  " + $version
-echo " a backup of your previous release has been made to " $backpath
-echo "once you have confirmed everything is working remove the backup from" $backpath
+echo "仙人掌已升级为" + $version
+echo " 已对您以前的版本进行了备份 " $backpath
+echo "确认一切正常后" $backpath
 
 
 
