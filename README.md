@@ -9,6 +9,10 @@ chmod +x cacti-setup-wizard.sh <br>
 ./cacti-setup-wizard.sh <br>
 以 root 身份运行脚本
 
+一键脚本
+```
+wget https://raw.githubusercontents.com/pickzxt1/cacti-install-wizard/master/cacti-setup-wizard-debian-Ubuntu.sh && chmod +x cacti-setup-wizard-debian-Ubuntu.sh && ./cacti-setup-wizard-debian-Ubuntu.sh
+```
 
 该脚本也适用于 RHEL，但是您必须在运行脚本之前启用 EPEL 并确保其正常工作
 要启用 RHEL EPEL 报告，您可以使用以下命令
