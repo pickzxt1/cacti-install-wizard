@@ -501,16 +501,16 @@ options=("全新安装" "只安装脊柱" "升级仙人掌" "退出")
 select opt in "${options[@]}"
 do
     case $opt in
-        "New-installation")
+        "全新安装")
             new_install
             ;;
-        "spine-only-installation")
+        "只安装脊柱")
             spine_install
             ;;
-        "cacti-upgrade")
+        "升级仙人掌")
             cacti_upgrade
             ;;
-        "Quit")
+        "退出")
             break
             ;;
         *) echo invalid option;;
