@@ -202,10 +202,10 @@ sed -i -e 's@^//$url_path@$url_path@g' /var/www/html/cacti/include/config.php
 
 
 echo "
-default database setup with following details
-database name cacti
-database username cacti
-datbase password  $password 
+具有以下详细信息的默认数据库设置
+数据库名称 cacti
+数据库用户名 cacti
+数据库密码 $password
 "
 
 
